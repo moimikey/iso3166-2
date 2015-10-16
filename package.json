@@ -1,0 +1,56 @@
+{
+  "name": "iso3166-2",
+  "version": "0.1.0",
+  "description": "Tiny, fast, modular ISO 3166-2 lookup library",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/moimikey/iso3166-2.git"
+  },
+  "keywords": [
+    "iso3166",
+    "country",
+    "countries",
+    "iso",
+    "locale"
+  ],
+  "author": "Michael Scott Hertzberg <mshertzberg@gmail.com> (http://michael.hertzberg.co/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/moimikey/iso3166-2/issues"
+  },
+  "homepage": "https://github.com/moimikey/iso3166-2",
+  "devDependencies": {
+    "csv2": "0.1.1",
+    "event-stream": "3.3.2",
+    "file-size": "1.0.0",
+    "harmonize": "1.4.4",
+    "hyperquest": "1.2.0",
+    "jsonstream2": "1.1.0",
+    "tape": "4.2.1",
+    "through2": "2.0.0"
+  },
+  "optionalDependencies": {
+    "brfs": "1.4.1",
+    "browserify": "11.2.0",
+    "uglifyjs": "2.4.10",
+    "zlib-browserify": "0.0.3"
+  },
+  "browserify": {
+    "transform": [
+      "brfs"
+    ]
+  },
+  "browser": {
+    "fs": false
+  },
+  "scripts": {
+    "build-basic": "echo 'Building build/iso3166-2.js...' && browserify index.js &> build/iso3166-2.js",
+    "build-global": "echo 'Building build/iso3166-2.global.js...' && browserify index.js --standalone iso3166 &> build/iso3166-2.global.js",
+    "build-ugly": "echo 'Building build/iso3166-2.min.js...' && cat build/iso3166-2.js | uglifyjs --screw-ie8 -c -m &> build/iso3166-2.min.js",
+    "build-ugly-global": "echo 'Building build/iso3166-2.global.min.js...' && cat build/iso3166-2.global.js | uglifyjs --screw-ie8 -c -m &> build/iso3166-2.global.min.js",
+    "build": "echo 'Building iso3166-2...' && npm run build-basic && npm run build-global && npm run build-ugly && npm run build-ugly-global",
+    "generate": "bin/generate",
+    "test": "tape"
+  }
+}
