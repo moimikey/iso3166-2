@@ -27,7 +27,7 @@
     "harmonize": "1.4.4",
     "hyperquest": "1.2.0",
     "jsonstream2": "1.1.0",
-    "tape": "4.2.1",
+    "tape": "4.2.2",
     "through2": "2.0.0"
   },
   "optionalDependencies": {
