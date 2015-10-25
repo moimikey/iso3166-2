@@ -1,110 +1,88 @@
-var read      = require('fs').readFileSync
-var gunzip    = require('zlib-browserify').gunzipSync
-var join      = require('path').join
+const fs = require('fs')
+const zlib = require('zlib-browserify')
+const path = require('path')
+const database = fs.readFileSync(path.join(__dirname, '../data', '/countries.json.gz'))
+const countries = JSON.parse(zlib.gunzipSync(database), 'utf-8')[0]
+const jsesc = require('jsesc')
+const { size, contains } = require('lodash')
 
-var countries = read(join(__dirname, '../data', '/countries.json.gz'))
-var ISOCodes  = JSON.parse(gunzip(countries).toString())
-
-module.exports = (function iso3166() {
-  var state = ''
-
-  /**
-   * Convert an ISO 3166-1 alpha-3 code to alpha-2
-   *
-   * @param  {String} alpha3 USA
-   * @return {String}
-   */
-  var to2 = function to2(alpha3) {
-    if (alpha3 && alpha3.length > 1) state = alpha3
-    if (state.length !== 3) return state
-    return ISOCodes.filter(function(row) {
-      return row.alpha3 === state
-    })[0].alpha2
+export default class iso31662 {
+  constructor(iso2) {
+    this.state = iso2
+    this.countries = countries
   }
 
   /**
-   * Convert an ISO 3166-1 alpha-2 code to alpha-3
-   *
-   * @param  {String} alpha2 US
-   * @return {String}
+   * set an initial country by ISO 3166-1 alpha 2
+   * @param {String} iso2
    */
-  var to3 = function to3(alpha2) {
-    if (alpha2 && alpha2.length > 1) state = alpha2
-    if (state.length !== 2) return state
-    return ISOCodes.filter(function(row) {
-      return row.alpha2 === state
-    })[0].alpha3
-  }
-
-  /**
-   * Prepare an ISO 3166-1 alpha-2 or alpha-3 code
-   * for conversion.
-   *
-   * @param  {String} code USA
-   * @return {Function}
-   */
-  var from = function from(code) {
-    if (typeof code !== 'string') return state
-    state = code.toUpperCase()
+  set(iso2) {
+    this.state = iso2
     return this
   }
 
   /**
-   * Prepare an ISO 3166-1 alpha-2 and ISO 639-1 pair
-   * for conversion.
-   *
-   * @param  {String} locale en-US
-   * @return {Function}
-   */
-  var fromLocale = function fromLocale(locale) {
-    if (typeof locale !== 'string') return state
-    state = locale.split('-').pop().toUpperCase()
-    return this
-  }
-
-  /**
-   * Return an Object containing key/val pair of
-   * ISO 3166-1 alpha-2 and alpha-3 codes.
-   *
+   * returns a styled object of all countries and
+   * total count
    * @return {Object}
    */
-  var list = function list() {
-    return ISOCodes
+  all() {
+    const list  = this.countries
+    const count = size(list)
+
+    return {
+      get count() {
+        return count
+      },
+      get list() {
+        return list
+      }
+    }
   }
 
   /**
-   * Return true if input is a known ISO 3166-1 alpha-2
-   * code, false otherwise.
-   *
-   * @param  {String} alpha2
-   * @return {Boolean}
-  */
-  var is2 = function is2(alpha2) {
-    return ISOCodes.some(function(row) {
-      return row.alpha2 === alpha2
-    })
+   * returns a raw array of countries as objects
+   * @return {Array}
+   */
+  raw() {
+    return this.countries
   }
 
   /**
-   * Return true if input is a known ISO 3166-1 alpha-3
-   * code, false otherwise.
-   *
-   * @param  {String} alpha3
-   * @return {Boolean}
-  */
-  var is3 = function is3(alpha3) {
-    return ISOCodes.some(function(row) {
-      return row.alpha3 === alpha3
-    })
+   * returns a list of subdivisions respective to
+   * the set country
+   * @return {Array}
+   */
+  list() {
+    return this.countries[this.state].subdivisions
   }
 
-  return {
-    to2:        to2,
-    to3:        to3,
-    from:       from,
-    fromLocale: fromLocale,
-    list:       list,
-    is2:        is2,
-    is3:        is3
+  /**
+   * returns a numeric count
+   * @return {Number}
+   */
+  count() {
+    if (!this.state) return this.countries.length
+    return this.countries[this.state].subdivisions.length
   }
-})()
+
+  /**
+   * returns the ISO 3166-1 alpha 3 code for the set country
+   * @return {String}
+   */
+  iso3() {
+    if (!this.state) throw new Error(`#iso3 is not directly callable.`)
+    return this.countries[this.state].country.iso3
+  }
+
+  /**
+   * predicate to whether the specified subdivision exists under
+   * the set country
+   * @param  {String}  subdivision
+   * @return {Boolean}
+   */
+  has(subdivision) {
+    if (!this.state) throw new Error(`#has is not directly callable.`)
+    return contains(this.countries[this.state].subdivisions, jsesc(subdivision))
+  }
+}

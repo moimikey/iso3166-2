@@ -9,10 +9,16 @@
   },
   "keywords": [
     "iso3166",
+    "iso3166-2",
+    "iso-3166-2",
     "country",
+    "subdivisons",
+    "counties",
+    "territories",
     "countries",
     "iso",
-    "locale"
+    "provinces",
+    "divisions"
   ],
   "author": "Michael Scott Hertzberg <mshertzberg@gmail.com> (http://michael.hertzberg.co/)",
   "license": "MIT",
@@ -21,23 +27,29 @@
   },
   "homepage": "https://github.com/moimikey/iso3166-2",
   "devDependencies": {
-    "csv2": "0.1.1",
-    "event-stream": "3.3.2",
-    "file-size": "1.0.0",
-    "harmonize": "1.4.4",
-    "hyperquest": "1.2.0",
-    "jsonstream2": "1.1.0",
-    "tape": "4.2.1",
-    "through2": "2.0.0"
-  },
-  "optionalDependencies": {
-    "brfs": "1.4.1",
-    "browserify": "11.2.0",
-    "uglifyjs": "2.4.10",
-    "zlib-browserify": "0.0.3"
+    "babel": "^5.8.23",
+    "babel-runtime": "^5.8.25",
+    "babelify": "^6.4.0",
+    "brfs": "^1.4.1",
+    "csv2": "^0.1.1",
+    "event-stream": "^3.3.2",
+    "file-size": "^1.0.0",
+    "hyperquest": "^1.2.0",
+    "jsesc": "^0.5.0",
+    "jsonstream2": "^1.1.0",
+    "lodash": "^3.10.1",
+    "punycode": "^1.3.2",
+    "request": "^2.65.0",
+    "stripquotes": "^0.2.1",
+    "tap-spec": "^4.1.0",
+    "tape": "^4.2.1",
+    "through2-reduce": "^1.0.0",
+    "uglifyjs": "^2.4.10",
+    "zlib-browserify": "^0.0.3"
   },
   "browserify": {
     "transform": [
+      "babelify",
       "brfs"
     ]
   },
@@ -45,12 +57,15 @@
     "fs": false
   },
   "scripts": {
-    "build-basic": "echo 'Building build/iso3166-2.js...' && browserify index.js &> build/iso3166-2.js",
-    "build-global": "echo 'Building build/iso3166-2.global.js...' && browserify index.js --standalone iso3166 &> build/iso3166-2.global.js",
-    "build-ugly": "echo 'Building build/iso3166-2.min.js...' && cat build/iso3166-2.js | uglifyjs --screw-ie8 -c -m &> build/iso3166-2.min.js",
-    "build-ugly-global": "echo 'Building build/iso3166-2.global.min.js...' && cat build/iso3166-2.global.js | uglifyjs --screw-ie8 -c -m &> build/iso3166-2.global.min.js",
+    "prepublish": "npm run generate && npm run test && npm run build",
+    "pile": "browserify src/index.js --standalone iso31662 --outfile lib/index.js",
+    "build-basic": "echo 'Building lib/iso3166-2.js...' && browserify src/index.js --outfile lib/iso3166-2.js",
+    "build-global": "echo 'Building lib/iso3166-2.global.js...' && browserify src/index.js --standalone iso31662 --outfile lib/iso3166-2.global.js",
+    "build-ugly": "echo 'Building lib/iso3166-2.min.js...' && cat lib/iso3166-2.js | uglifyjs --noerr --screw-ie8 -m --output lib/iso3166-2.min.js",
+    "build-ugly-global": "echo 'Building lib/iso3166-2.global.min.js...' && cat lib/iso3166-2.global.js | uglifyjs --noerr --screw-ie8 -m --output lib/iso3166-2.global.min.js",
     "build": "echo 'Building iso3166-2...' && npm run build-basic && npm run build-global && npm run build-ugly && npm run build-ugly-global",
-    "generate": "bin/generate",
-    "test": "tape"
+    "generate": "babel-node bin/generate",
+    "test": "tape tests/index.js | tap-spec",
+    "benchmark": "matcha -R plain"
   }
 }

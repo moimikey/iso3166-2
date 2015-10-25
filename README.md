@@ -5,25 +5,44 @@ The smallest, fastest, node module for resolving ISO 3166-2 geographic subdivisi
 
 ## it's totally small!
 ```
-$ browserify iso3166-2.js | wc -c | numfmt --to=iec --suffix=B --format="%3f"
-
-$ browserify iso3166-2.js | uglifyjs | wc -c | numfmt --to=iec --suffix=B --format="%3f"
-
-$ browserify iso3166-2.js | uglifyjs - --screw-ie8 --compress --mangle | yuicompressor --type js -o iso3166-2.js && cat iso3166-2.js | wc -c | numfmt --to=iec --suffix=B --format="%3f"
-
+$ browserify -t babelify -t brfs src/index.js | wc -c | numfmt --to=iec --suffix=B --format="%3f"
+> 129KB
+$ browserify -t babelify -t brfs src/index.js | ./uglifyjs --noerr --screw-ie8 -m -c 2> /dev/stdout | wc -c | numfmt --to=iec --suffix=B --format="%3f"
+> 95KB
+$ browserify -t babelify -t brfs src/index.js | ./uglifyjs --noerr --screw-ie8 -m -c 2> /dev/stdout | gzip | wc -c | numfmt --to=iec --suffix=B --format="%3f"
+> 53KB
 ```
-## with over 240 countries and completely update to date with ISO standards!
+## with over 200 countries and completely update to date with ISO standards!
 ```
 > var countries = require('./countries.json')
-> Object.keys(countries).length
-250
+> Object.keys(countries.list()).length
+202
 >
 ...
 ```
 
 ## example usage
 ```
-var iso31662 = require('iso3166-2')
+> const iso31662 from 'iso3166-2'
+> iso31662.set('DE').has('Thüringen')
+true
+> iso31662.set('DE').has('Th\xFCringen')
+true
+> iso31662.set('DE').iso3
+"DEU"
+> iso31662.set('DE').count
+16
+> iso31662.set('DE').list
+
+> iso31662.coun
+> iso31662.all()
+{ AF:
+   { country: { name: 'Afghanistan', iso3: 'AFG' },
+     subdivisions:
+      [ 'Badakhsh\\u0101n',
+        'Baghl\\u0101n',
+        'Balkh',
+...
 ```
 
 [npm-version-url]: https://www.npmjs.com/package/iso3166-2
