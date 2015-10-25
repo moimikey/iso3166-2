@@ -4,12 +4,13 @@ const path = require('path')
 const database = fs.readFileSync(path.join(__dirname, '../data', '/countries.json.gz'))
 const countries = JSON.parse(zlib.gunzipSync(database), 'utf-8')[0]
 const jsesc = require('jsesc')
-const { size, contains } = require('lodash')
+const { isString, size, contains } = require('lodash')
 
-export default class iso31662 {
+export default new class iso31662 {
   constructor(iso2) {
     this.state = iso2
     this.countries = countries
+    this.details = void 0
   }
 
   /**
@@ -17,7 +18,9 @@ export default class iso31662 {
    * @param {String} iso2
    */
   set(iso2) {
+    if (!isString(iso2) || size(iso2) !== 2) return this
     this.state = iso2
+    this.details = this.countries[this.state]
     return this
   }
 

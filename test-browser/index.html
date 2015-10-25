@@ -4,8 +4,17 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Browser Test</title>
-  <script src="../lib/iso3166-2.js"></script>
+  <script src="../lib/index.js"></script>
+  <script src="https://rawgit.com/lodash/lodash/3.10.1/lodash.min.js"></script>
   <script>
+  console.log(iso31662)
+  console.log(iso31662.set('US'))
+  console.log(iso31662.iso3())
+  console.log(`there are ${iso31662.count()} ${iso31662.details.country.division}s within ${iso31662.details.country.name} like ${_.sample(iso31662.list(), 3)}`)
+  console.log(iso31662.set('DE'))
+  var divisions = JSON.parse(`"${_.sample(iso31662.list(), 3)}"`)
+  console.log(divisions)
+  console.log(`${iso31662.details.country.name} is nice too. It has ${iso31662.count()} ${iso31662.details.country.divisions}s like ${divisions}`)
   </script>
 </head>
 <body>

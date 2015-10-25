@@ -1,5 +1,5 @@
 var test     = require('tape')
-var iso31662 = require('..')
+var iso31662 = require('../lib')
 
 test('returns an iso31662 object', function (t) {
   t.plan(1)
@@ -10,6 +10,12 @@ test('returns an iso31662 object', function (t) {
 test('has a callable list function', function (t) {
   t.plan(1)
   t.equal(typeof iso31662.list, 'function')
+  t.end()
+})
+
+test('`set` should not set if the provided string is not an ISO 3166-1 alpha 2 code', function (t) {
+  t.plan(1)
+  t.doesNotEqual(iso31662.set('DEU').state, 'DEU')
   t.end()
 })
 

@@ -50,7 +50,8 @@ request.get('https://raw.githubusercontent.com/awjrichards/WLM-ISO-3166-2/master
       result[line[8]] = {}
       result[line[8]].country = {
         name: jsesc(stripquotes(line[0])),
-        iso3: line[9]
+        iso3: line[9],
+        division: line[3]
       }
       result[line[8]].subdivisions = []
     }
