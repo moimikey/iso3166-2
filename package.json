@@ -28,7 +28,7 @@
   "homepage": "https://github.com/moimikey/iso3166-2",
   "devDependencies": {
     "babel": "~5.8.23",
-    "babel-runtime": "~5.8.25",
+    "babel-runtime": "~6.0.8",
     "babelify": "~6.4.0",
     "brfs": "~1.4.1",
     "csv2": "~0.1.1",
