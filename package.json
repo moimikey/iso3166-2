@@ -29,7 +29,7 @@
   "devDependencies": {
     "babel": "~6.0.2",
     "babel-runtime": "~5.8.25",
-    "babelify": "~6.4.0",
+    "babelify": "~7.0.2",
     "brfs": "~1.4.1",
     "csv2": "~0.1.1",
     "event-stream": "~3.3.2",
