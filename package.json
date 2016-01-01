@@ -30,7 +30,7 @@
     "babel": "~6.0.2",
     "babel-runtime": "~6.1.18",
     "babelify": "~7.2.0",
-    "brfs": "~1.4.1",
+    "brfs": "~1.4.2",
     "csv2": "~0.1.1",
     "event-stream": "~3.3.2",
     "file-size": "~1.0.0",
