@@ -42,7 +42,7 @@
     "request": "~2.65.0",
     "stripquotes": "~0.2.3",
     "tap-spec": "~4.1.0",
-    "tape": "~4.2.1",
+    "tape": "~4.5.1",
     "through2-reduce": "~1.0.0",
     "uglifyjs": "~2.4.10",
     "zlib-browserify": "~0.0.3"
