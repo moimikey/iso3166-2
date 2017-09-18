@@ -1,4 +1,6 @@
 # iso3166-2
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/moimikey/iso3166-2.svg)](https://greenkeeper.io/)
 [![Version][npm-version-image]][npm-version-url] [![License][npm-license-image]][npm-license-url] [![Downloads][npm-downloads-image]][npm-downloads-url] [![Deps][npm-deps-image]][npm-deps-url] [![DevDeps][npm-devdeps-image]][npm-devdeps-url] [![Build Status][drone-build-image]][drone-build-url]
 
 The smallest, fastest, node module for resolving ISO 3166-2 geographic subdivisions. Browserify/Webpack friendly.
